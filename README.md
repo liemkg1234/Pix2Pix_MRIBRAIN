@@ -21,9 +21,15 @@ python app/pred.py
 
 ## Sơ đồ tổng quát
 ![samples]
+## Mô hình Pix2Pix phát hiện vùng bất thường trên MRI não
+### Generator
+![samples]
+### Discriminator
+![samples]
 
 ## Tập dữ liệu
 - MRI Brain DHYDCT: Gồm 2812 MRI não (604 ảnh có bất thường/khối u) của 139 bệnh nhân với chuỗi xung T2FLAIR được Bệnh viện Trường Đại học Y Dược Cần Thơ cung cấp cùng với nhãn bất thường được các bác sĩ tại bệnh viện thực hiện gán nhãn bằng ứng dụng labelme. Tập dữ liệu được chia với tỷ lệ Train/Validation/Test là 65%/15%/20%.
 - [Brain MRI segmentation](https://www.kaggle.com/datasets/mateuszbuda/lgg-mri-segmentation): Gồm 3929 ảnh MRI não (1373 lát cắt có bất thường/khối u) với chuỗi xung FLAIR. Tập dữ liệu được sử dụng để tăng cường cho tập Train để huấn luyện mô hình.
 
 ## Tiền xử lý và tăng cường dữ liệu
+![samples]
