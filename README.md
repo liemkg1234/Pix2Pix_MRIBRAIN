@@ -22,6 +22,7 @@ python app/pred.py
 ## Sơ đồ tổng quát
 ![samples]
 ## Mô hình Pix2Pix phát hiện vùng bất thường trên MRI não
+![samples]
 ### Generator
 ![samples]
 ### Discriminator
@@ -33,3 +34,20 @@ python app/pred.py
 
 ## Tiền xử lý và tăng cường dữ liệu
 ![samples]
+
+## Kết quả thực nghiệm
+Các thông số chung:
+- Img_size: 416x416
+- Batch_size: 16
+- Epochs: 100
+
+**Kết quả phân lớp**
+
+**Kết quả phân vùng bất thường**
+
+## Demo
+![samples]
+![samples](https://github.com/liemkg1234/Websocket_FaceMaskDetection/blob/master/images/demo2.PNG)
+
+### Liên hệ
+Email:  liemkg1234@gmail.com
