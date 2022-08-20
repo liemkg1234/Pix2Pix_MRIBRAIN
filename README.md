@@ -20,34 +20,36 @@ python app/pred.py
 ```
 
 ## Sơ đồ tổng quát
-![samples]
+![samples](https://github.com/liemkg1234/Pix2Pix_MRIBrain/blob/master/images/model.PNG)
 ## Mô hình Pix2Pix phát hiện vùng bất thường trên MRI não
-![samples]
+![samples](https://github.com/liemkg1234/Pix2Pix_MRIBrain/blob/master/images/Pix2Pix.PNG)
 ### Generator
-![samples]
+![samples](https://github.com/liemkg1234/Pix2Pix_MRIBrain/blob/master/images/G.PNG)
 ### Discriminator
-![samples]
+![samples](https://github.com/liemkg1234/Pix2Pix_MRIBrain/blob/master/images/D.PNG)
 
 ## Tập dữ liệu
 - MRI Brain DHYDCT: Gồm 2812 MRI não (604 ảnh có bất thường/khối u) của 139 bệnh nhân với chuỗi xung T2FLAIR được Bệnh viện Trường Đại học Y Dược Cần Thơ cung cấp cùng với nhãn bất thường được các bác sĩ tại bệnh viện thực hiện gán nhãn bằng ứng dụng labelme. Tập dữ liệu được chia với tỷ lệ Train/Validation/Test là 65%/15%/20%.
 - [Brain MRI segmentation](https://www.kaggle.com/datasets/mateuszbuda/lgg-mri-segmentation): Gồm 3929 ảnh MRI não (1373 lát cắt có bất thường/khối u) với chuỗi xung FLAIR. Tập dữ liệu được sử dụng để tăng cường cho tập Train để huấn luyện mô hình.
 
 ## Tiền xử lý và tăng cường dữ liệu
-![samples]
+![samples](https://github.com/liemkg1234/Pix2Pix_MRIBrain/blob/master/images/preprocessing.PNG)
 
 ## Kết quả thực nghiệm
 Các thông số chung:
-- Img_size: 416x416
-- Batch_size: 16
-- Epochs: 100
-
+- Img_size: 256x256
+- Batch_size: 64
+- Steps: 20000
+- Generator_lr: 〖2*10〗^(-4)
+- Discriminator_lr: 〖2*10〗^(-4)
+- Loss Distance: Euclid (L2)
+- Lambda: 200
 **Kết quả phân lớp**
-
+![samples](https://github.com/liemkg1234/Pix2Pix_MRIBrain/blob/master/images/kq1.PNG)
 **Kết quả phân vùng bất thường**
-
+![samples](https://github.com/liemkg1234/Pix2Pix_MRIBrain/blob/master/images/kq2.PNG)
 ## Demo
-![samples]
-![samples](https://github.com/liemkg1234/Websocket_FaceMaskDetection/blob/master/images/demo2.PNG)
+![samples](https://github.com/liemkg1234/Pix2Pix_MRIBrain/blob/master/images/Demo.PNG)
 
 ### Liên hệ
 Email:  liemkg1234@gmail.com
