@@ -44,6 +44,7 @@ Các thông số chung:
 - Discriminator_lr: 〖2*10〗^(-4)
 - Loss Distance: Euclid (L2)
 - Lambda: 200
+
 **Kết quả phân lớp**
 ![samples](https://github.com/liemkg1234/Pix2Pix_MRIBrain/blob/master/images/kq1.PNG)
 **Kết quả phân vùng bất thường**
