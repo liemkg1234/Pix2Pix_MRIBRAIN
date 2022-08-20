@@ -41,8 +41,8 @@ Các thông số chung:
 - Img_size: 256x256
 - Batch_size: 64
 - Steps: 20000
-- Generator_lr: 〖2*10〗^(-4)
-- Discriminator_lr: 〖2*10〗^(-4)
+- Generator_lr: 0.0002
+- Discriminator_lr: 0.0002
 - Loss Distance: Euclid (L2)
 - Lambda: 200
 
