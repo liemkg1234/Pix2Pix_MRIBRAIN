@@ -34,6 +34,16 @@ python app/pred.py
 - [Brain MRI segmentation](https://www.kaggle.com/datasets/mateuszbuda/lgg-mri-segmentation): Gồm 3929 ảnh MRI não (1373 lát cắt có bất thường/khối u) với chuỗi xung FLAIR. Tập dữ liệu được sử dụng để tăng cường cho tập Train để huấn luyện mô hình.
 
 ## Tiền xử lý và tăng cường dữ liệu
+**Tiền xử lý ảnh**
+- Bước 1: Chuyển mặt nạ từ .JSON sang .JPG
+- Bước 2: Lọc các bệnh nhân không có bất thường (33 bệnh nhân)
+- Bước 3: Cắt bỏ viền ảnh (Dùng Yolov5)
+- Chuẩn hóa giá trị từ [0,255] về [-1,1] (Pix2Pix) hoặc [0,1] (Efficient)
+**Tăng cường hình ảnh**
+Để tập dữ liệu cân bằng, cần tăng cường các hình ảnh có bất thường, sau đó các hình ảnh bất thường tăng lên 2 lần. Các phương pháp gồm:
+- flip_left_right: Tỷ lệ 30%
+- flip_up_down: Tỷ lệ 30%
+- rotation 90: Tỷ lệ 40%
 ![samples](https://github.com/liemkg1234/Pix2Pix_MRIBrain/blob/master/images/preprocessing.PNG)
 
 ## Kết quả thực nghiệm
