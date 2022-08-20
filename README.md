@@ -39,6 +39,7 @@ python app/pred.py
 - Bước 2: Lọc các bệnh nhân không có bất thường (33 bệnh nhân)
 - Bước 3: Cắt bỏ viền ảnh (Dùng Yolov5)
 - Chuẩn hóa giá trị từ [0,255] về [-1,1] (Pix2Pix) hoặc [0,1] (Efficient)
+
 **Tăng cường hình ảnh**
 Để tập dữ liệu cân bằng, cần tăng cường các hình ảnh có bất thường, sau đó các hình ảnh bất thường tăng lên 2 lần. Các phương pháp gồm:
 - flip_left_right: Tỷ lệ 30%
