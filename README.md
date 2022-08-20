@@ -1,9 +1,10 @@
 # Phát hiện bất thường trên MRI não với mô hình Pix2Pix
-Trong bài luận, mình sử dụng các mô hình phân lớp như [Resnet50](https://keras.io/api/applications/resnet/#resnet50-function), [InceptionV3](https://keras.io/api/applications/inceptionv3/), và [EfficientNetB6](https://keras.io/api/applications/efficientnet/#efficientnetb6-function) để huấn luyện mô hình phân lớp lắt cắt MRI não có bất thường hay không. Sau đó, mình sử dụng mô hình Pix2Pix để huấn luyện mô hình tìm vùng bất thường trên các ảnh có bất thường. Cuối cùng mình sử dụng tkinter để thiết kế giao diện để sử dụng các mô hình đã huấn luyện được.
+Trong bài luận, mình sử dụng các mô hình phân lớp như [Resnet50](https://keras.io/api/applications/resnet/#resnet50-function), [InceptionV3](https://keras.io/api/applications/inceptionv3/), và [EfficientNetB6](https://keras.io/api/applications/efficientnet/#efficientnetb6-function) để huấn luyện mô hình phân lớp lắt cắt MRI não có bất thường hay không. Sau đó, mình sử dụng mô hình [Pix2Pix](https://arxiv.org/pdf/1611.07004.pdf) để huấn luyện mô hình tìm vùng bất thường trên các ảnh có bất thường. Cuối cùng mình sử dụng tkinter để thiết kế giao diện để sử dụng các mô hình đã huấn luyện được.
 
 **Các thư viện sử dụng**
 - [Tensorflow 2.3.4](https://pypi.org/project/tensorflow/2.3.4/)
 - [labelme](https://github.com/wkentaro/labelme)
+- [tkinter](https://docs.python.org/3/library/tkinter.html)
 
 **Môi trường**
 - [Google Colaboratory](https://research.google.com/colaboratory/)
