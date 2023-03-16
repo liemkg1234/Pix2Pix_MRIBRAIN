@@ -38,7 +38,7 @@ def specificity(y_true, y_pred):
     specificity = tn / (tn + fp + K.epsilon())
     return specificity
 
-model_Classifi = tf.keras.models.load_model ('best/efib6split_1.h5', custom_objects={"precision": precision, "recall": recall, 'specificity': specificity, "f1_metric": f1_metric})
+model_Classifi = tf.keras.models.load_model ('app/best/Effi7.h5', custom_objects={"precision": precision, "recall": recall, 'specificity': specificity, "f1_metric": f1_metric})
 
 
 #Learning rate
@@ -54,7 +54,7 @@ D = Discriminator()
 discriminator_optimizer = tf.keras.optimizers.Adam(d_lr, beta_1=beta_1)
 
 #load weight
-checkpoint_dir = 'best/'
+checkpoint_dir = 'app/best/'
 checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt")
 checkpoint = tf.train.Checkpoint(generator_optimizer=generator_optimizer,
                                  discriminator_optimizer=discriminator_optimizer,
