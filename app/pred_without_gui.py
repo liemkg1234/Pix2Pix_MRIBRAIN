@@ -65,21 +65,13 @@ checkpoint = tf.train.Checkpoint(
 )
 checkpoint.restore(tf.train.latest_checkpoint(checkpoint_dir))
 
-def load_image(path_image):
+def show_image(path_image):
     image = Image.open(path_image).convert('L')
     image = image.resize((256, 256))
-    
-    # Display the image
-    plt.figure(figsize=(6, 6))
-    plt.imshow(image, cmap='gray')
-    plt.title("Input Image")
-    plt.axis('off')  # Hide the axis for better visualization
-    plt.show()
-    
-    return path_image
+    display(image)
 
-def load_mask(path_image):
-    image = Image.open(path_image)
+def show_mask(path_mask):
+    image = Image.open(path_mask)
     image = image.resize((256, 256))
     rgb_img = image.convert('RGB')
     
@@ -87,15 +79,7 @@ def load_mask(path_image):
     r, g, b = rgb_img.split()
     b = b.point(lambda i: i * 0.0)
     result = Image.merge('RGB', (r, g, b))
-    
-    # Display the mask
-    plt.figure(figsize=(6, 6))
-    plt.imshow(result)
-    plt.title("Input Mask")
-    plt.axis('off')  # Hide the axis for better visualization
-    plt.show()
-    
-    return path_image
+    display(result)
 
 
 import matplotlib.pyplot as plt
@@ -143,21 +127,8 @@ def predict_without_gui(path_image, path_mask):
     mask_arr = np.array(result_mask)
     merge_arr = np.add(result_arr, mask_arr)
     merge_img = Image.fromarray(merge_arr)
-
-    # Display the generated image
-    plt.figure(figsize=(6, 6))
-    plt.imshow(result)
-    plt.title("Generated Image")
-    plt.axis('off')
-    plt.show()
-
-    # Display the merged image
-    plt.figure(figsize=(6, 6))
-    plt.imshow(merge_img)
-    plt.title("Merged Image")
-    plt.axis('off')
-    plt.show()
-
+    display(result)
+    display(merge_img)
 
 def main(image_path, mask_path):
     if not os.path.exists(image_path):
