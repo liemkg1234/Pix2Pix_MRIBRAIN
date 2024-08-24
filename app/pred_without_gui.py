@@ -87,7 +87,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
 
-def predict_without_gui(path_image, path_mask):
+def predict_without_gui(path_image, path_mask, output_dir='output'):
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    
     image, mask = load_image_train(path_image, path_mask)
     
     # Classification
@@ -131,8 +134,8 @@ def predict_without_gui(path_image, path_mask):
     display(result)
     display(merge_img)
     # Save the images
-    result.save('/output/generated_image.png')
-    merge_img.save('/output/merged_image.png')
+    result.save(os.path.join(output_dir, 'generated_image.png'))
+    merge_img.save(os.path.join(output_dir, 'merged_image.png'))
 
 def main(image_path, mask_path):
     if not os.path.exists(image_path):
