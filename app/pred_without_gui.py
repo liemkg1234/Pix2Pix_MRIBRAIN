@@ -1,4 +1,4 @@
-from PIL import Image
+from PIL import Image, ImageOps
 import numpy as np
 import os
 from IPython.display import display
@@ -134,8 +134,9 @@ def predict_without_gui(path_image, path_mask, output_dir='output'):
     display(result)
     display(merge_img)
     # Save the images
-    result.save(os.path.join(output_dir, 'generated_image.png'))
-    merge_img.save(os.path.join(output_dir, 'merged_image.png'))
+    grayscale_result = ImageOps.grayscale(result)
+    binary_result = grayscale_result.point(lambda p: 255 if p > 0 else 0)
+    binary_result.save(os.path.join(output_dir, 'generated_image.png'))
 
 def main(image_path, mask_path):
     if not os.path.exists(image_path):
