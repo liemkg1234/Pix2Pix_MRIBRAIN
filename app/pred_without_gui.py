@@ -88,9 +88,9 @@ def load_mask(path_mask):
 # Define the predict function without GUI
 def predict_without_gui(image_path, mask_path):
     # Load image and mask
-    path_image = load_image(image_path)
-    path_mask = load_mask(mask_path)
-    image, mask = load_image_train(image_path, mask_path)
+    image_data = load_image(image_path)
+    mask_data = load_mask(mask_path)
+    image, mask = load_image_train(image_data, mask_data)
     
     # Classification
     image_classifi, mask_classifi = load_classifi(image_path, mask_path)
