@@ -5,6 +5,11 @@ import argparse
 import tensorflow as tf
 import tensorflow.keras.backend as K
 
+# from app.model import Generator, Discriminator, Precision, IoU, load_image_train
+from model import Generator, Discriminator, Precision, IoU, load_image_train, load_classifi
+import tensorflow as tf
+import tensorflow.keras.backend as K
+
 # Custom metrics
 def f1_metric(y_true, y_pred):
     true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
