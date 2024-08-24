@@ -66,31 +66,10 @@ checkpoint = tf.train.Checkpoint(
 checkpoint.restore(tf.train.latest_checkpoint(checkpoint_dir))
 
 
-def load_image(path_image):
-    # Load image, convert to grayscale, and resize
-    image = Image.open(path_image).convert('L')
-    image = image.resize((256, 256))
-    return image
-
-def load_mask(path_mask):
-    # Load mask image and resize
-    image = Image.open(path_mask)
-    image = image.resize((256, 256))
-
-    # Convert mask to RGB and change white to yellow
-    rgb_img = image.convert('RGB')
-    r, g, b = rgb_img.split()
-    b = b.point(lambda i: i * 0.0)
-    result = Image.merge('RGB', (r, g, b))
-
-    return result
-
 # Define the predict function without GUI
 def predict_without_gui(image_path, mask_path):
     # Load image and mask
-    image_data = load_image(image_path)
-    mask_data = load_mask(mask_path)
-    image, mask = load_image_train(image_data, mask_data)
+    image, mask = load_image_train(image_path, mask_path)
     
     # Classification
     image_classifi, mask_classifi = load_classifi(image_path, mask_path)
@@ -133,24 +112,26 @@ def predict_without_gui(image_path, mask_path):
     merge_arr = np.add(result_arr, mask_arr)
     merge_img = Image.fromarray(merge_arr)
 
-    plt.figure(figsize=(15, 5))
+    result = result.resize((256, 256))
+    merge_img = merge_img.resize((256, 256))
 
-    plt.subplot(1, 3, 1)
+    # Hiển thị hình ảnh sinh ra và hình ảnh gộp
+    plt.figure(figsize=(10, 5))
+
+    plt.subplot(1, 2, 1)
     plt.title("Generated Image")
-    plt.imshow(generated_image)
+    plt.imshow(result)
     plt.axis('off')
 
-    plt.subplot(1, 3, 2)
-    plt.title("Mask")
-    plt.imshow(yellow_mask)
-    plt.axis('off')
-
-    plt.subplot(1, 3, 3)
+    plt.subplot(1, 2, 2)
     plt.title("Merged Image")
     plt.imshow(merge_img)
     plt.axis('off')
 
     plt.show()
+
+    # Hiển thị Precision, IoU, và Class
+    print('Precision: {:.6f}, IoU: {:.6f}, Class: {}'.format(pre, iou, classifi))
 
 def main(image_path, mask_path):
     if not os.path.exists(image_path):
