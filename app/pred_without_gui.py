@@ -65,73 +65,74 @@ checkpoint = tf.train.Checkpoint(
 )
 checkpoint.restore(tf.train.latest_checkpoint(checkpoint_dir))
 
+def load_image(path_image):
+    image = Image.open(path_image).convert('L')
+    image = image.resize((256, 256))
+    plt.imshow(image, cmap='gray')
+    plt.title("Input Image")
+    plt.show()
+    return path_image
 
-# Define the predict function without GUI
-def predict_without_gui(image_path, mask_path):
-    # Load image and mask
-    image, mask = load_image_train(image_path, mask_path)
-    
+def load_mask(path_image):
+    image = Image.open(path_image)
+    image = image.resize((256, 256))
+    rgb_img = image.convert('RGB')
+    r, g, b = rgb_img.split()
+    b = b.point(lambda i: i * 0.0)
+    result = Image.merge('RGB', (r, g, b))
+    plt.imshow(result)
+    plt.title("Input Mask")
+    plt.show()
+    return path_image
+
+def predict(path_image, path_mask):
+    image, mask = load_image_train(path_image, path_mask)
     # Classification
-    image_classifi, mask_classifi = load_classifi(image_path, mask_path)
+    image_classifi, mask_classifi = load_classifi(path_image, path_mask)
     image_classifi = image_classifi[tf.newaxis, ...]
+
     classifi = model_Classifi.predict(image_classifi)
     classifi = 1 if classifi >= 0.5 else 0
 
-    # Generate image using the Generator model
+    # Predict
     G_out = G(image[tf.newaxis, ...], training=True)
     G_image = G_out[0, :, :, 0]
 
-    # Calculate Precision and IoU
+    # Precision, IoU
     pre = Precision(G_image, mask[:, :, 0])
     iou = IoU(G_image, mask[:, :, 0])
-    print(f"Precision: {pre:.6f}, IoU: {iou:.6f}, Class: {classifi}")
+    print(f"Precision: {pre:.6f}, IoU: {iou:.6f}, Classification: {classifi}")
 
-    # Process images for output
     G_image = (G_image + 1) * 127.5
     mask = (mask + 1) * 127.5
 
-    generated_image = Image.fromarray(G_image.numpy())
-
-    # Convert mask to yellow
-    mask_image = Image.fromarray(mask[:, :, 0].numpy())
-    mask_rgb = mask_image.convert('RGB')
-    r, g, b = mask_rgb.split()
-    b = b.point(lambda i: i * 0.0)
-    yellow_mask = Image.merge('RGB', (r, g, b))
-
-    # Convert generated image to blue
-    generated_rgb = generated_image.convert('RGB')
-    r, g, b = generated_rgb.split()
+    G_image = Image.fromarray(G_image.numpy())
+    rgb_G_out = G_image.convert('RGB')
+    r, g, b = rgb_G_out.split()
     r = r.point(lambda i: i * 0.0)
     g = g.point(lambda i: i * 0.0)
-    blue_generated = Image.merge('RGB', (r, g, b))
+    result = Image.merge('RGB', (r, g, b))
 
-    # Merge the mask and generated images
-    result_arr = np.array(blue_generated)
-    mask_arr = np.array(yellow_mask)
+    mask = Image.fromarray(mask[:, :, 0].numpy())
+    mask_rgb = mask.convert('RGB')
+    r, g, b = mask_rgb.split()
+    b = b.point(lambda i: i * 0.0)
+    result_mask = Image.merge('RGB', (r, g, b))
+
+    result_arr = np.array(result)
+    mask_arr = np.array(result_mask)
     merge_arr = np.add(result_arr, mask_arr)
     merge_img = Image.fromarray(merge_arr)
 
-    result = result.resize((256, 256))
-    merge_img = merge_img.resize((256, 256))
-
-    # Hiển thị hình ảnh sinh ra và hình ảnh gộp
-    plt.figure(figsize=(10, 5))
-
-    plt.subplot(1, 2, 1)
-    plt.title("Generated Image")
+    # Show generated image
     plt.imshow(result)
-    plt.axis('off')
-
-    plt.subplot(1, 2, 2)
-    plt.title("Merged Image")
-    plt.imshow(merge_img)
-    plt.axis('off')
-
+    plt.title("Generated Image")
     plt.show()
 
-    # Hiển thị Precision, IoU, và Class
-    print('Precision: {:.6f}, IoU: {:.6f}, Class: {}'.format(pre, iou, classifi))
+    # Show merged image
+    plt.imshow(merge_img)
+    plt.title("Merged Image")
+    plt.show()
 
 def main(image_path, mask_path):
     if not os.path.exists(image_path):
@@ -142,6 +143,8 @@ def main(image_path, mask_path):
         return
 
     print(f"Predicting for Image: {image_path} and Mask: {mask_path}")
+    load_image(image_path)
+    load_mask(mask_path)
     predict_without_gui(image_path, mask_path)
     print("Prediction completed.")
 
