@@ -34,7 +34,6 @@ icu==68.1
 idna==3.3
 importlib-metadata==4.11.3
 intel-openmp==2021.4.0
-jpeg==9e
 keras-preprocessing==1.1.2
 lerc==3.0
 libcurl==7.84.0
