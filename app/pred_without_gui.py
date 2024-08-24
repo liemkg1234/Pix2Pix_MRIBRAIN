@@ -130,6 +130,9 @@ def predict_without_gui(path_image, path_mask):
     merge_img = Image.fromarray(merge_arr)
     display(result)
     display(merge_img)
+    # Save the images
+    result.save('/output/generated_image.png')
+    merge_img.save('/output/merged_image.png')
 
 def main(image_path, mask_path):
     if not os.path.exists(image_path):
