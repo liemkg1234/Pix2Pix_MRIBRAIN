@@ -139,8 +139,8 @@ def main(image_path, mask_path):
         return
 
     print(f"Predicting for Image: {image_path} and Mask: {mask_path}")
-    load_image(image_path)
-    load_mask(mask_path)
+    show_image(image_path)
+    show_mask(mask_path)
     predict_without_gui(image_path, mask_path)
     print("Prediction completed.")
 
