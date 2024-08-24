@@ -68,71 +68,96 @@ checkpoint.restore(tf.train.latest_checkpoint(checkpoint_dir))
 def load_image(path_image):
     image = Image.open(path_image).convert('L')
     image = image.resize((256, 256))
+    
+    # Display the image
+    plt.figure(figsize=(6, 6))
     plt.imshow(image, cmap='gray')
     plt.title("Input Image")
+    plt.axis('off')  # Hide the axis for better visualization
     plt.show()
+    
     return path_image
 
 def load_mask(path_image):
     image = Image.open(path_image)
     image = image.resize((256, 256))
     rgb_img = image.convert('RGB')
+    
+    # Convert the image to a red-yellow mask
     r, g, b = rgb_img.split()
     b = b.point(lambda i: i * 0.0)
     result = Image.merge('RGB', (r, g, b))
+    
+    # Display the mask
+    plt.figure(figsize=(6, 6))
     plt.imshow(result)
     plt.title("Input Mask")
+    plt.axis('off')  # Hide the axis for better visualization
     plt.show()
+    
     return path_image
 
-def predict(path_image, path_mask):
+
+import matplotlib.pyplot as plt
+import numpy as np
+from PIL import Image
+
+def predict_without_gui(path_image, path_mask):
     image, mask = load_image_train(path_image, path_mask)
+    
     # Classification
     image_classifi, mask_classifi = load_classifi(path_image, path_mask)
     image_classifi = image_classifi[tf.newaxis, ...]
-
+    
     classifi = model_Classifi.predict(image_classifi)
     classifi = 1 if classifi >= 0.5 else 0
-
-    # Predict
+    
+    # Predict using the Generator model
     G_out = G(image[tf.newaxis, ...], training=True)
     G_image = G_out[0, :, :, 0]
 
-    # Precision, IoU
+    # Calculate Precision and IoU
     pre = Precision(G_image, mask[:, :, 0])
     iou = IoU(G_image, mask[:, :, 0])
     print(f"Precision: {pre:.6f}, IoU: {iou:.6f}, Classification: {classifi}")
 
+    # Convert generated image and mask for display
     G_image = (G_image + 1) * 127.5
     mask = (mask + 1) * 127.5
 
-    G_image = Image.fromarray(G_image.numpy())
+    G_image = Image.fromarray(G_image.numpy().astype(np.uint8))
     rgb_G_out = G_image.convert('RGB')
     r, g, b = rgb_G_out.split()
     r = r.point(lambda i: i * 0.0)
     g = g.point(lambda i: i * 0.0)
     result = Image.merge('RGB', (r, g, b))
 
-    mask = Image.fromarray(mask[:, :, 0].numpy())
+    mask = Image.fromarray(mask[:, :, 0].numpy().astype(np.uint8))
     mask_rgb = mask.convert('RGB')
     r, g, b = mask_rgb.split()
     b = b.point(lambda i: i * 0.0)
     result_mask = Image.merge('RGB', (r, g, b))
 
+    # Merge the generated image and mask
     result_arr = np.array(result)
     mask_arr = np.array(result_mask)
     merge_arr = np.add(result_arr, mask_arr)
     merge_img = Image.fromarray(merge_arr)
 
-    # Show generated image
+    # Display the generated image
+    plt.figure(figsize=(6, 6))
     plt.imshow(result)
     plt.title("Generated Image")
+    plt.axis('off')
     plt.show()
 
-    # Show merged image
+    # Display the merged image
+    plt.figure(figsize=(6, 6))
     plt.imshow(merge_img)
     plt.title("Merged Image")
+    plt.axis('off')
     plt.show()
+
 
 def main(image_path, mask_path):
     if not os.path.exists(image_path):
