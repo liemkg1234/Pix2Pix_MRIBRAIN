@@ -11,7 +11,7 @@ from model import Generator, Discriminator, Precision, IoU, load_image_train, lo
 import tensorflow as tf
 import tensorflow.keras.backend as K
 
-# Custom metrics
+# Classification
 def f1_metric(y_true, y_pred):
     true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
     possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
@@ -20,19 +20,18 @@ def f1_metric(y_true, y_pred):
     recall = true_positives / (possible_positives + K.epsilon())
     f1_val = 2 * (precision * recall) / (precision + recall + K.epsilon())
     return f1_val
-
 def precision(y_true, y_pred):
     true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+    possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
     predicted_positives = K.sum(K.round(K.clip(y_pred, 0, 1)))
     precision = true_positives / (predicted_positives + K.epsilon())
     return precision
-
 def recall(y_true, y_pred):
     true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
     possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
+    predicted_positives = K.sum(K.round(K.clip(y_pred, 0, 1)))
     recall = true_positives / (possible_positives + K.epsilon())
     return recall
-
 def specificity(y_true, y_pred):
     neg_y_true = 1 - y_true
     neg_y_pred = 1 - y_pred
@@ -42,10 +41,7 @@ def specificity(y_true, y_pred):
     return specificity
 
 # Load the classification model
-model_Classifi = tf.keras.models.load_model(
-    '/content/drive/MyDrive/Luan_Van/best/Effi7.h5',
-    custom_objects={"precision": precision, "recall": recall, 'specificity': specificity, "f1_metric": f1_metric}
-)
+model_Classifi = tf.keras.models.load_model ('/content/drive/MyDrive/Luan_Van/best/Effi7.h5', custom_objects={"precision": precision, "recall": recall, 'specificity': specificity, "f1_metric": f1_metric})
 
 # Learning rate and other parameters
 d_lr = 2e-4
@@ -69,9 +65,31 @@ checkpoint = tf.train.Checkpoint(
 )
 checkpoint.restore(tf.train.latest_checkpoint(checkpoint_dir))
 
+
+def load_image(path_image):
+    # Load image, convert to grayscale, and resize
+    image = Image.open(path_image).convert('L')
+    image = image.resize((256, 256))
+    return image
+
+def load_mask(path_mask):
+    # Load mask image and resize
+    image = Image.open(path_mask)
+    image = image.resize((256, 256))
+
+    # Convert mask to RGB and change white to yellow
+    rgb_img = image.convert('RGB')
+    r, g, b = rgb_img.split()
+    b = b.point(lambda i: i * 0.0)
+    result = Image.merge('RGB', (r, g, b))
+
+    return result
+
 # Define the predict function without GUI
 def predict_without_gui(image_path, mask_path):
     # Load image and mask
+    path_image = load_image(image_path)
+    path_mask = load_mask(mask_path)
     image, mask = load_image_train(image_path, mask_path)
     
     # Classification
