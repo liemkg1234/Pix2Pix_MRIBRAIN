@@ -37,7 +37,7 @@ def specificity(y_true, y_pred):
 
 # Load the classification model
 model_Classifi = tf.keras.models.load_model(
-    'app/best/Effi7.h5',
+    '/content/drive/MyDrive/Luan_Van/best/Effi7.h5',
     custom_objects={"precision": precision, "recall": recall, 'specificity': specificity, "f1_metric": f1_metric}
 )
 
@@ -54,7 +54,7 @@ D = Discriminator()
 discriminator_optimizer = tf.keras.optimizers.Adam(d_lr, beta_1=beta_1)
 
 # Load weights
-checkpoint_dir = 'app/best/'
+checkpoint_dir = '/content/drive/MyDrive/Luan_Van/best/'
 checkpoint = tf.train.Checkpoint(
     generator_optimizer=generator_optimizer,
     discriminator_optimizer=discriminator_optimizer,
