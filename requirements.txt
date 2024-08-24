@@ -53,7 +53,6 @@ multidict==5.1.0
 numpy==1.22.3
 numpy-base==1.22.3
 oauthlib==3.2.0
-openssl==1.1.1q
 opt_einsum==3.3.0
 pillow==9.2.0
 pip==22.1.2
