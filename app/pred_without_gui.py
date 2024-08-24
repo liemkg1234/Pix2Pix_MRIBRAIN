@@ -4,6 +4,7 @@ import os
 import argparse
 import tensorflow as tf
 import tensorflow.keras.backend as K
+import matplotlib.pyplot as plt
 
 # from app.model import Generator, Discriminator, Precision, IoU, load_image_train
 from model import Generator, Discriminator, Precision, IoU, load_image_train, load_classifi
@@ -114,15 +115,24 @@ def predict_without_gui(image_path, mask_path):
     merge_arr = np.add(result_arr, mask_arr)
     merge_img = Image.fromarray(merge_arr)
 
-    # Save or display results
-    generated_image.show(title="Generated Image")
-    yellow_mask.show(title="Mask")
-    merge_img.show(title="Merged Image")
+    plt.figure(figsize=(15, 5))
 
-    # You can save the images if needed
-    # generated_image.save("generated_image.png")
-    # yellow_mask.save("yellow_mask.png")
-    # merge_img.save("merged_image.png")
+    plt.subplot(1, 3, 1)
+    plt.title("Generated Image")
+    plt.imshow(generated_image)
+    plt.axis('off')
+
+    plt.subplot(1, 3, 2)
+    plt.title("Mask")
+    plt.imshow(yellow_mask)
+    plt.axis('off')
+
+    plt.subplot(1, 3, 3)
+    plt.title("Merged Image")
+    plt.imshow(merge_img)
+    plt.axis('off')
+
+    plt.show()
 
 def main(image_path, mask_path):
     if not os.path.exists(image_path):
