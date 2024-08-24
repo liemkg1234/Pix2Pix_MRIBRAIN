@@ -1,6 +1,7 @@
 from PIL import Image
 import numpy as np
 import os
+import argparse
 import tensorflow as tf
 import tensorflow.keras.backend as K
 
@@ -118,7 +119,23 @@ def predict_without_gui(image_path, mask_path):
     # yellow_mask.save("yellow_mask.png")
     # merge_img.save("merged_image.png")
 
-# Example usage
-image_path = 'path/to/your/image.jpg'
-mask_path = 'path/to/your/mask.jpg'
-predict_without_gui(image_path, mask_path)
+def main(image_path, mask_path):
+    if not os.path.exists(image_path):
+        print(f"Image file not found: {image_path}")
+        return
+    if not os.path.exists(mask_path):
+        print(f"Mask file not found: {mask_path}")
+        return
+
+    print(f"Predicting for Image: {image_path} and Mask: {mask_path}")
+    predict_without_gui(image_path, mask_path)
+    print("Prediction completed.")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Predict using image and mask")
+    parser.add_argument('--image', type=str, required=True, help='Path to the input image')
+    parser.add_argument('--mask', type=str, required=True, help='Path to the input mask')
+
+    args = parser.parse_args()
+
+    main(args.image, args.mask)
